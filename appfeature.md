@@ -1,0 +1,11 @@
+1. Poem Schema
+    - title
+    - id
+    - category
+    - body
+    - image
+    - author
+    - likes
+    - createdAt
+    - updatedAt
+    - readTime

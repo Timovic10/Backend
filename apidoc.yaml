@@ -1,0 +1,146 @@
+openapi: 3.0.0
+info:
+  title: Poem Reader
+  description: Poem Reader Api Documentation Version 1
+  version: 1.0.0
+servers:
+  - url: http://localhost:9000/api/v1
+paths:
+  /poemapi/poem:
+    get:
+      tags:
+        - get all poem
+      summary: List all poems
+      description: This endpoint returns an array of all poem that is on our platform
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Poem'
+    post:
+      tags:
+        - create poem
+      summary: create a new poem
+      description: This is for adding a new poem by author
+      responses:
+        201:
+          description: Poem Created
+          content:
+            application/json:
+              schema:
+              type: object
+              items:
+                $ref: '#/components/schemas/Poem'
+  /poemapi/singlePoem/:id:
+    patch:
+      tags:
+        - update poem
+      summary: update poem
+      description: This is for updating a poem
+      parameters:
+        - $ref: '#/components/parameters/poemTitleParam'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              example: {sucess: true, message: "poem updated successfully"}
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  /comments/comment/{poemId}:
+    post:
+      tags:
+        - add comment
+      summary: add comment
+      description: This allows user to add comment on poems
+      responses:
+        200:
+          description: comment added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+
+
+
+components:
+  schemas:
+    Poem:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "9r8820208cjd9302"
+        title:
+          type: string
+          example: "Foxy little  thing"
+        body:
+          type: string
+          example: "Foxy little thing little thing thingh thiny tin..."
+        author:
+          type: string
+          example: "938047njv30"
+        category:
+          type: string
+          example: "folk tale"
+      required:
+        - id
+        - title
+        - body
+        - category
+    Comment:
+      type: object
+      properties:
+        poemId:
+          type: string
+          example: "3363839334773hds37382"
+        text: 
+          type: string
+          example: "good piece, keep winning"
+      required:
+        - poemId
+        - text
+  parameters:
+    poemTitleQuery:
+      in: query
+      title: poemTitle
+      schema:
+        type: string
+      description: Title of poem
+      required: true
+    poemTitleParam:
+      in: path
+      name: poemTitle
+      schema:
+        type: string
+      description: Title of poem
+      required: true
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example: {success: false, message: Bad or malformed request from client.}
+    NotFound:
+      description: Not found
+      content: 
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example: {success: false}
+
+
+    
